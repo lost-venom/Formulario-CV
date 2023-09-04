@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Registro CV</title>
+    
+    {% load static %}
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css' %}">
+    
+    <div class="container">
+        
+    </div>
+    <style>
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <form method="POST" class="formulario needs-validation" id="multistep-form" enctype="multipart/form-data" novalidate action="{% url 'inicio' %}">
+
+            
+            {% csrf_token %}
+            <title>Formulario Registro CV</title>
+            <div class="step-container active" id="step-1">
+                <h1>Formulario De Registro CV</h1>
+
+
+                <div class="form-group">
+                    <label for="archivo_foto">Subir Foto: 📷 </label><br>
+                    <input type="file" class="form-control-file" id="archivo_foto" name="archivo_foto" onchange="mostrarVistaPrevia(this)">
+                    <div class="image-preview">
+                        <img id="vista_previa" src="#" alt="Vista Previa" style="max-width: 200px; display: none;">
+                        <img id="default_preview" src="{% static 'Persona-incognita.jpg' %}" alt="Imagen Predeterminada" style="max-width: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="numero_identificacion">Número de Identificación:</label>
+                    <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" pattern="[0-9]+" title="Ingresa solo numeros" placeholder="Cedula" required><br>
+                    <div class="valid-feedback">
+                        válido.
+                    </div>
+                    <div class="invalid-feedback">
+                        Por favor, proporciona un número de identificación válido.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                <label for="nombres">Nombres Completos:</label>
+                <input type="text"  id="nombres" name="nombres" class="form-control" pattern="[A-Za-z\s]+" title="Ingresa solo letras (mayúsculas o minúsculas)" placeholder="Nombres" required><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="apellidos">Apellidos Completos:</label>
+                <input type="text" class="form-control" id="apellidos" name="apellidos" pattern="[A-Za-z\s]+" title="Ingresa solo letras (mayúsculas o minúsculas)" placeholder="Apellidos" required><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+                
+                <div class="form-group">
+                <label for="numero_celular">Número de Celular:</label>
+                <input type="tel" class="form-control" id="numero_celular" name="numero_celular" pattern="[0-9]+" title="Ingresa solo numeros" placeholder="Telefono" required><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="correo_electronico">Correo Electrónico:</label>
+                <input type="email" class="form-control" id="correo_electronico" name="correo_electronico" pattern="[^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$]" title="Verifica el correo electronico" placeholder="Correo Electronico" required><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+                
+                
+                
+                <button type="button" id="next-button" class="btn btn-primary" onclick="validateAndNext('step-1', 'step-2')">Siguiente</button>
+            </div>
+
+        
+
+            <div class="step-container" id="step-2">
+
+                <div class="form-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required><br>
+                </div>
+                
+                <div class="form-group">
+                <label for="lugar_nacimiento">Lugar de Nacimiento:</label>
+                <input type="text" class="form-control" id="lugar_nacimiento" name="lugar_nacimiento" required><br>
+
+                <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" required><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+                
+
+                <div class="form-group">
+                <label for="formacion_academica">Formación Académica:</label>
+                <textarea id="formacion_academica"  class="form-control" name="formacion_academica" rows="4" required></textarea><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="certificaciones">Certificaciones o reconocimientos :</label>
+                    <textarea id="certificaciones" class="form-control" name="certificaciones" rows="4" required></textarea><br>
+                </div>
+
+                <div class="form-group">
+                    <label for="idiomas">Idiomas :</label>
+                    <textarea id="idiomas" class="form-control" name="idiomas" rows="4" required></textarea><br>
+                </div>
+
+                <div class="form-group">
+                <label for="habilidades">Habilidades (máximo 5):</label>
+                <textarea id="habilidades" class="form-control" name="habilidades" rows="4" maxlength="500" required></textarea>
+                <small id="habilidades-help" class="form-text text-muted">Ingrese hasta 5 habilidades separadas por líneas.</small>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                <label for="experiencia_laboral">Experiencia Laboral:</label>
+                <textarea id="experiencia_laboral" class="form-control" name="experiencia_laboral" rows="4" required></textarea><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="refe_laborales">Referencia Laborales:</label>
+                <textarea id="refe_laborales" class="form-control" name="refe_laborales" rows="4" required></textarea><br>
+                <div class="valid-feedback">
+                    válido.
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, proporciona los datos correspondientes.
+                </div>
+                </div>
+    
+
+                <div class="form-group">           
+                <label for="archivo_documento">Subir Documento: 📂 </label>
+                <input type="file" id="archivo_documento" class="form-control-file" name="archivo_documento"><br>
+                </div>
+
+                <button type="button" onclick="prevStep('step-2', 'step-1')">Anterior</button>
+                
+                
+                <input type="submit" value="Enviar">
+  
+            </div>
+        </form>
+    </div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'script.js' %}"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "Felicitaciones",
+                    "text": "{{m}}",
+                    "icon":"success"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+
+</body>
+</html>
